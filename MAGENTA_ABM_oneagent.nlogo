@@ -15,7 +15,7 @@ patches-own [owned-by ;; determines who the plot belongs to
   fertility ;; soil fertility of plot
   profit-ext ;; potential profit given extensive management
   profit-int ;; potential profit given intensive management
-  prox-river ;; reports 1 if distance to river is =< DIST
+  dist-river ;; reports distance to river
   agg ;; reports the share of neighbouring plots that were managed extensively in previous period (for agg bonus)
   manag ;; management chosen for plot (intensive or extensive)
   yield ;; actual yield given management
@@ -62,11 +62,8 @@ to define-land-cover
     set profit-ext 0
     set profit-int 0
     set agg 0
-    ;; check whether plots are by the river (distance either 0, 1 or 2 via "dist" slider)
-    ifelse distance min-one-of patches with [cover = "river"] [distance myself] <= dist [
-      set prox-river 1 ][
-      set prox-river 0
-    ]
+    ;; set distance to river
+    set dist-river distance min-one-of patches with [cover = "river"] [distance myself]
   ]
 end
 
@@ -111,7 +108,7 @@ to calc-pot-profit
   ;; We assume that the market price of grass is 1 and costs are 0 (so that yield = income without agri-env payments).
   ;; calculate potential profits for each management variant (for each plot separately)
   ask my-land [
-    set profit-ext (1.5 * (1 + fertility)) ^ 0.5 + base-p + bonus-wat * prox-river + bonus-agg * agg
+    set profit-ext (1.5 * (1 + fertility)) ^ 0.5 + base-p + bonus-wat / dist-river + bonus-agg * agg
     set profit-int (2 * (1 + fertility)) ^ 0.5
   ]
 end
@@ -160,7 +157,7 @@ to calc-profit
   ;; calculate realized profit for each plot
   ask my-land [
     ifelse manag = "ext" [
-      set profit yield + base-p + bonus-wat * prox-river + bonus-agg * agg
+      set profit yield + base-p + bonus-wat / dist-river + bonus-agg * agg
     ][
       set profit yield
     ]
@@ -295,7 +292,7 @@ base-p
 base-p
 0
 0.25
-0.14
+0.12
 0.01
 1
 NIL
@@ -310,7 +307,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.14
+0.0
 0.01
 1
 NIL
@@ -325,7 +322,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.1
+0.25
 0.01
 1
 NIL
@@ -402,21 +399,6 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot count patches with [manag = \"ext\"] / count patches with [cover = \"grass\"]"
-
-SLIDER
-13
-231
-185
-264
-dist
-dist
-0
-2
-1.0
-1
-1
-NIL
-HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
