@@ -1,0 +1,1 @@
+This is the agent-based modelling part of a project (Multi-objective AGENT-based land-use Allocation, MAGENTA) to combine multi-objective landscape optimization modelling with agent-based modelling.
