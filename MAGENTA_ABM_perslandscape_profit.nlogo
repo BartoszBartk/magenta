@@ -123,7 +123,7 @@ end
 
 to set-manag
   ;; for CHANGE plots with highest potential profit, set manag based on most profitable option and colour plots accordingly
-  ;;
+  ;; check profit potential for each plot from a change in management
   ask my-land with [manag = "int"][
     ifelse profit-int < profit-ext [
       set profit-pot "YES"
@@ -138,6 +138,7 @@ to set-manag
     set profit-pot "NO"
     ]
   ]
+  ;; change management for selected, most profitable plots (CHANGE or fewer)
   ifelse count my-land with [profit-pot = "YES"] >= change [
     ask max-n-of change my-land with [profit-pot = "YES"][
       abs profit-int - profit-ext
@@ -330,7 +331,7 @@ base-p
 base-p
 0
 0.25
-0.21
+0.17
 0.01
 1
 NIL

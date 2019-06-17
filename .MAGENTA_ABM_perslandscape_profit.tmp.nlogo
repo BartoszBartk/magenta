@@ -138,6 +138,7 @@ to set-manag
     set profit-pot "NO"
     ]
   ]
+
   ifelse count my-land with [profit-pot = "YES"] >= change [
     ask max-n-of change my-land with [profit-pot = "YES"][
       abs profit-int - profit-ext
@@ -153,7 +154,6 @@ to set-manag
     ]
   ][
     ask my-land with [profit-pot = "YES"][
-
       if profit-int < profit-ext [
         set manag "ext"
         set pcolor green
@@ -331,7 +331,7 @@ base-p
 base-p
 0
 0.25
-0.21
+0.17
 0.01
 1
 NIL
