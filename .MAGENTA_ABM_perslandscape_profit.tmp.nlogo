@@ -15,6 +15,7 @@ patches-own [owned-by ;; determines who the plot belongs to
   fertility ;; soil fertility of plot
   profit-ext ;; potential profit given extensive management
   profit-int ;; potential profit given intensive management
+  profit-pot ;; is there potential to profit from change of management?
   prox-river ;; reports 1 if distance to river is =< DIST
   agg ;; reports the share of neighbouring plots that were managed extensively in previous period (for agg bonus)
   manag ;; management chosen for plot (intensive or extensive)
@@ -122,26 +123,22 @@ end
 
 to set-manag
   ;; for CHANGE plots with highest potential profit, set manag based on most profitable option and colour plots accordingly
-  ;; identify most profitable changes on intensive land (rather complicated)
-  ife count my-land with [manag = "int"] >= change [
-    let profitable-int max-n-of change my-land with [manag = "int"][
-      (profit-ext - profit-int)
+  ;;
+  ask my-land with [manag = "int"][
+    ifelse profit-int < profit-ext [
+      set profit-pot "YES"
+    ][
+    set profit-pot "NO"
     ]
-  ][
-    let profitable-int my-land with [manag = "int"]
   ]
-  if count my-land with [manag = "ext"] >= change [
-    let profitable-ext max-n-of change my-land with [manag = "ext"][
-      (profit-int - profit-ext)
+  ask my-land with [manag = "ext"][
+    ifelse profit-ext < profit-int [
+      set profit-pot "YES"
+    ][
+    set profit-pot "NO"
     ]
-  ][
-    let profitable-ext my-land with [manag = "ext"]
   ]
-  let profitable-land max-n-of change (patch-set profitable-int profitable-ext) [
-    abs (profit-int - profit-ext)
-  ]
-  ;; let them change management
-  ask profitable-land [
+  ask max-n-of change my-land with [profit-pot = "YES"] [abs profit-int - profit-ext [
     if profit-int < profit-ext [
       set manag "ext"
       set pcolor green
@@ -318,7 +315,7 @@ base-p
 base-p
 0
 0.25
-0.13
+0.21
 0.01
 1
 NIL
