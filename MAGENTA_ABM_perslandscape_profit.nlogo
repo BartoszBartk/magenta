@@ -122,7 +122,7 @@ to calc-pot-profit
 end
 
 to set-manag
-  ;; for CHANGE plots with highest potential profit, set manag based on most profitable option and colour plots accordingly
+  ;; for up to CHANGE-LIM plots with highest potential profit, set manag based on most profitable option and colour plots accordingly
   ;; check profit potential for each plot from a change in management
   ask my-land with [manag = "int"][
     ifelse profit-int < profit-ext [
@@ -138,9 +138,9 @@ to set-manag
     set profit-pot "NO"
     ]
   ]
-  ;; change management for selected, most profitable plots (CHANGE or fewer)
-  ifelse count my-land with [profit-pot = "YES"] >= change [
-    ask max-n-of change my-land with [profit-pot = "YES"][
+  ;; change management for selected, most profitable plots (CHANGE-LIM or fewer)
+  ifelse count my-land with [profit-pot = "YES"] >= change-lim [
+    ask max-n-of change-lim my-land with [profit-pot = "YES"][
       abs profit-int - profit-ext
     ][
       if profit-int < profit-ext [
@@ -459,8 +459,8 @@ SLIDER
 275
 186
 308
-change
-change
+change-lim
+change-lim
 1
 10
 1.0
