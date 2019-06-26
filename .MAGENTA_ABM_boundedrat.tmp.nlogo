@@ -7,6 +7,7 @@ globals [budget ;; budget used in each period for agri-environmental payments
 turtles-own [my-land ;; plots owned by farmer
   total-yield ;; sum of yields of all plots owned by farmer
   income ;; income from yields and payments received
+  income-thresh ;; threshold in income beyond which no further action is done
 ]
 patches-own [owned-by ;; determines who the plot belongs to
   my-neighbors ;; neighbouring plots owned by self farmer
@@ -33,6 +34,9 @@ to setup
   set-default-shape turtles "person"
   ask n-of 10 patches with [cover = "grass"] [
     sprout 1
+  ]
+  ask turtles [
+    set income-thresh 50
   ]
   assign-plots
   check-agg
@@ -97,9 +101,14 @@ end
 
 to go
   ask turtles [
-    calc-pot-profit
-    set-manag
-    update-manag
+    if (ticks = 1) [
+      set-thresh
+    ]
+    if (income < income-thresh) [
+      calc-pot-profit
+      set-manag
+      update-manag
+    ]
   ]
   calc-yield
   check-agg
@@ -109,6 +118,11 @@ to go
   ]
   evaluate
   tick
+end
+
+to set-thresh
+
+  set income-thresh mean [income] of turtles - 5 + random-float 10
 end
 
 to calc-pot-profit
@@ -299,7 +313,7 @@ base-p
 base-p
 0
 0.25
-0.25
+0.16
 0.01
 1
 NIL
@@ -314,7 +328,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.25
+0.1
 0.01
 1
 NIL
@@ -329,7 +343,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.25
+0.13
 0.01
 1
 NIL
@@ -416,7 +430,7 @@ dist
 dist
 0
 2
-2.0
+1.0
 1
 1
 NIL

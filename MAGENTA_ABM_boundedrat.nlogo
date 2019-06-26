@@ -7,6 +7,7 @@ globals [budget ;; budget used in each period for agri-environmental payments
 turtles-own [my-land ;; plots owned by farmer
   total-yield ;; sum of yields of all plots owned by farmer
   income ;; income from yields and payments received
+  income-thresh ;; threshold in income beyond which no further action is done
 ]
 patches-own [owned-by ;; determines who the plot belongs to
   my-neighbors ;; neighbouring plots owned by self farmer
@@ -33,6 +34,9 @@ to setup
   set-default-shape turtles "person"
   ask n-of 10 patches with [cover = "grass"] [
     sprout 1
+  ]
+  ask turtles [
+    set income-thresh 50
   ]
   assign-plots
   check-agg
@@ -97,9 +101,14 @@ end
 
 to go
   ask turtles [
-    calc-pot-profit
-    set-manag
-    update-manag
+    if (ticks = 1) [
+      set-thresh
+    ]
+    if (income < income-thresh) [
+      calc-pot-profit
+      set-manag
+      update-manag
+    ]
   ]
   calc-yield
   check-agg
@@ -109,6 +118,11 @@ to go
   ]
   evaluate
   tick
+end
+
+to set-thresh
+  ;; set income threshold in dependence of average income after first period
+  set income-thresh mean [income] of turtles - 5 + random-float 10
 end
 
 to calc-pot-profit
@@ -121,8 +135,8 @@ to calc-pot-profit
 end
 
 to set-manag
-  ;; fset manag based on most profitable option and colour plots accordingly
-  ask n-of change my-land [
+  ;; set manag based on most profitable option and colour plots accordingly
+  ask my-land [
     if profit-int < profit-ext [
       set manag "ext"
       set pcolor green
@@ -299,7 +313,7 @@ base-p
 base-p
 0
 0.25
-0.13
+0.16
 0.01
 1
 NIL
@@ -314,7 +328,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.13
+0.1
 0.01
 1
 NIL
@@ -329,7 +343,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.12
+0.13
 0.01
 1
 NIL
@@ -422,25 +436,10 @@ dist
 NIL
 HORIZONTAL
 
-SLIDER
-14
-275
-186
-308
-change
-change
-1
-10
-5.0
-1
-1
-NIL
-HORIZONTAL
-
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
+This is a very simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
 
 ## HOW IT WORKS
 
@@ -448,7 +447,7 @@ Agents (FARMERS) compare potential income from each patch they own for intensive
 
 1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms
 2. Potential profit calculation: calculate potential profit for each patch (intensive & extensive) given current land allocation and including base payment and boni
-3. Allocation of management: allocate management to patch (extensive vs intensive): for a random set of patches (number following CHANGE), the farmer may change management
+3. Allocation: allocate management to patch (extensive vs intensive)
 4. Yield calculation: calculate each patch’s yield given allocation
 5. Agglomeration: check how many neighbouring patches are managed extensively
 6. Reception of payments: calculate payments received by each patch
@@ -462,7 +461,6 @@ BASE-P sets the level of the base payment
 BONUS-AGG sets the level of the agglomeration bonus
 BONUS-WAT sets the level of the water quality bonus
 DIST sets the distance from the river of the patches that receive BONUS-WAT
-CHANGE sets the number of patches for which the farmer may change management in each period
 
 MEAN YIELDS plot reports the mean yield of the landscape's patches
 MEAN INCOMES plot reports the mean income derived by each farmer
