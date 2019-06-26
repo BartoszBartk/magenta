@@ -439,13 +439,13 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a very simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
+This is a very simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization up to an income threshold beyond which they seize making changes in management. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
 
 ## HOW IT WORKS
 
 Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly. The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
 
-1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms
+1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms; set income threshold for each farmer
 2. Potential profit calculation: calculate potential profit for each patch (intensive & extensive) given current land allocation and including base payment and boni
 3. Allocation: allocate management to patch (extensive vs intensive)
 4. Yield calculation: calculate each patch’s yield given allocation
