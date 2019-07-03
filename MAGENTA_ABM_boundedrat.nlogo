@@ -26,7 +26,7 @@ patches-own [owned-by ;; determines who the plot belongs to
 to setup
   ca
   set landscape gis:load-dataset "models_data/landuse_rand.asc"
-  set soil-quality gis:load-dataset "models_data/soil_fertility.asc"
+  set soil-quality gis:load-dataset "models_data/soil_fertility_nlm.asc"
   gis:apply-raster landscape ascii-val
   gis:apply-raster soil-quality fertility
   define-land-cover

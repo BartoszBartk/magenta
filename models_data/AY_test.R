@@ -25,7 +25,7 @@ setwd("C:\\Users\\bartkows\\Documents\\Papers\\2019 Social ecological optimizati
 
 # read in ascii files as tables
 lu.map <- read.table("landuse_final.asc", h=F, skip=6, sep=" ")
-fert.map <- read.table("soil_fertility.asc", h=F, skip=6, sep=" ")
+fert.map <- read.table("soil_fertility_nlm.asc", h=F, skip=6, sep=" ")
 
 # (just for testing) visualize maps
 # lu.map_ <- read.asciigrid("landuse_rand.asc", as.image = FALSE, plot.image = FALSE, colname = "lu",
@@ -48,6 +48,6 @@ ay <- sqrt(lu.map[grassland.idx] * (1 + fert.map[grassland.idx]))
 ay[is.na(ay)] <- 0
 
 # summarize over whole area and normalize ay to a range from 0 to 100 
-ay.sum <- (round(sum(ay),2) - 302.06) / (348.79 - 302.06) * 100
+ay.sum <- (round(sum(ay),2) - 296.8974) / (342.8276 - 296.8974) * 100 
 
 # write model output...
