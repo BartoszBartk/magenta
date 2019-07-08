@@ -17,7 +17,7 @@ patches-own [owned-by ;; determines who the plot belongs to
   profit-ext ;; potential profit given extensive management
   profit-int ;; potential profit given intensive management
   profit-pot ;; is there potential to profit from change of management?
-  prox-river ;; reports 1 if distance to river is =< DIST
+  prox-river ;; reports 1 if distance to river is =< DIST (WATER-BONUS = "simple") OR reports inverse distance to river (WATER-BONUS = "as ES model")
   agg ;; reports the share of neighbouring plots that were managed extensively in previous period (for agg bonus)
   manag ;; management chosen for plot (intensive or extensive)
   yield ;; actual yield given management
@@ -67,10 +67,16 @@ to define-land-cover
     set profit-ext 0
     set profit-int 0
     set agg 0
+    if water-bonus = "simple" [
     ;; check whether plots are by the river (distance either 0, 1 or 2 via "dist" slider)
-    ifelse distance min-one-of patches with [cover = "river"] [distance myself] <= dist [
-      set prox-river 1 ][
-      set prox-river 0
+      ifelse distance min-one-of patches with [cover = "river"] [distance myself] <= dist [
+        set prox-river 1 ][
+        set prox-river 0
+      ]
+    ]
+    if water-bonus = "as ES model" [
+      ;; set inverse distance to river
+    set prox-river 1 / distance min-one-of patches with [cover = "river"] [distance myself]
     ]
   ]
 end
@@ -82,9 +88,11 @@ to assign-plots
       set owned-by myself
     ]
     set my-land patches with [owned-by = myself]
-    ask my-land [
-      set plabel-color [color] of myself
-      set plabel "mine"
+    if no-agents > 1 [
+      ask my-land [
+        set plabel-color [color] of myself
+        set plabel "mine"
+      ]
     ]
   ]
   ;; set MY-NEIGHBORS
@@ -102,7 +110,7 @@ end
 
 to go
   ask turtles [
-    if (ticks = 0) [
+    if (ticks = 1) [
       set-thresh
     ]
     ifelse bounded-rationality? [
@@ -207,15 +215,17 @@ to set-manag
 end
 
 to update-manag
-  ;; correct for neighboring own plots with profit potential if both extensive
-  ask my-land with [manag = "int"] [
-    ask my-neighbors with [manag = "int"] [
-      if 0.25 * bonus-agg > (([profit-int] of self - [profit-ext] of self) + ([profit-int] of myself - [profit-ext] of myself)) [
-        set manag "ext"
-        set pcolor green
-        ask myself [
+  ;; correct for neighboring own plots with profit potential if both extensive, but only if there is room for it (i.e. persistence parameters allow)
+  if (persistence = "profit" AND (count my-land with [profit-pot = "YES"] <= change-lim)) OR change-lim = count patches / count turtles [
+    ask my-land with [manag = "int"] [
+      ask my-neighbors with [manag = "int"] [
+        if 0.25 * bonus-agg > (([profit-int] of self - [profit-ext] of self) + ([profit-int] of myself - [profit-ext] of myself)) [
           set manag "ext"
           set pcolor green
+          ask myself [
+            set manag "ext"
+            set pcolor green
+          ]
         ]
       ]
     ]
@@ -346,9 +356,9 @@ NIL
 1
 
 BUTTON
-112
+87
 10
-175
+150
 43
 NIL
 go\n
@@ -503,7 +513,7 @@ no-agents
 no-agents
 1
 10
-10.0
+1.0
 1
 1
 NIL
@@ -517,7 +527,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-0
+1
 
 SLIDER
 15
@@ -528,7 +538,7 @@ change-lim
 change-lim
 1
 20
-3.0
+20.0
 1
 1
 NIL
@@ -541,7 +551,7 @@ SWITCH
 176
 bounded-rationality?
 bounded-rationality?
-0
+1
 1
 -1000
 
@@ -555,18 +565,28 @@ bounded
 "uniform" "heterogeneity"
 1
 
+CHOOSER
+14
+236
+185
+281
+water-bonus
+water-bonus
+"simple" "as ES model"
+1
+
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a very simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization up to an income threshold beyond which they seize making changes in management. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
+This is a simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization (optionally: up to an income threshold beyond which they seize making changes in management). The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
 
 ## HOW IT WORKS
 
-Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly. The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
+Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly (unless they have reached an income threshold beyond which they don't make any further changes) to a limited number of patches (randomly chosen or with highest income gain). The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
 
 1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms; set income threshold for each farmer
 2. Potential profit calculation: calculate potential profit for each patch (intensive & extensive) given current land allocation and including base payment and boni
-3. Allocation: allocate management to patch (extensive vs intensive)
+3. Allocation: allocate management to a limited number of patches (extensive vs intensive)
 4. Yield calculation: calculate each patch’s yield given allocation
 5. Agglomeration: check how many neighbouring patches are managed extensively
 6. Reception of payments: calculate payments received by each patch
@@ -576,6 +596,13 @@ Agents (FARMERS) compare potential income from each patch they own for intensive
 
 ## HOW TO USE IT
 
+PERSISTENCE allows for choosing between selection mechanism for "changable" plots (random or income maximizing)
+CHANGE-LIM sets the maximum number of plots that may be changed per farmer and tick
+BOUNDED-RATIONALITY? allows to switch on boundedly rational behaviour (changes until an income threshold is reached)
+BOUNDED allows for choosing between variants of bounded rationality (same threshold for all vs heterogeneity among farmers)
+WATER-BONUS allows for choosing between variants of the payment function for the water quality bonus (simple one for DIST closest plots and one that follows R model)
+
+NO-AGENTS sets the number of farmers
 BASE-P sets the level of the base payment
 BONUS-AGG sets the level of the agglomeration bonus
 BONUS-WAT sets the level of the water quality bonus
@@ -592,14 +619,13 @@ Patches have the word "MINE" printed on them in the colour of the farmer they be
 
 ## THINGS TO TRY
 
-Move sliders setting the levels of payments and notice the resulting extent of land-use change and the duration until an equilibrium is reached.
+Move sliders setting the levels of payments and notice the resulting extent of land-use change and the duration until an equilibrium is reached. Compare various variants of the model (persistence of landscape, rationality & heterogeneity of agents).
 
 ## EXTENDING THE MODEL
 
 Possible changes and extensions:
 * interactions among farmers going beyond simple reactions to last period's land allocation (e.g. cheap talk, side payments...)
 * more land-use options (e.g. arable land, agroforestry, forest)
-* behaviourally heterogeneous farmers
 * additional policy instruments (e.g. zoning)
 * more complex evaluation models (e.g. biodiversity also based on margins)
 
