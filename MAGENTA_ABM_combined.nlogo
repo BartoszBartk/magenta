@@ -7,6 +7,7 @@ globals [budget ;; budget used in each period for agri-environmental payments
 turtles-own [my-land ;; plots owned by farmer
   total-yield ;; sum of yields of all plots owned by farmer
   income ;; income from yields and payments received
+  income-thresh ;; threshold in income beyond which no further action is done
 ]
 patches-own [owned-by ;; determines who the plot belongs to
   my-neighbors ;; neighbouring plots owned by self farmer
@@ -32,8 +33,11 @@ to setup
   define-land-cover
   ;; create turtles
   set-default-shape turtles "person"
-  ask n-of 10 patches with [cover = "grass"] [
+  ask n-of no-agents patches with [cover = "grass"] [
     sprout 1
+  ]
+  ask turtles [
+    set income-thresh 50
   ]
   assign-plots
   check-agg
@@ -98,10 +102,21 @@ end
 
 to go
   ask turtles [
-    calc-pot-profit
-    set-manag
-    update-manag
-  ]
+    if (ticks = 0) [
+      set-thresh
+    ]
+    ifelse bounded-rationality? [
+      if (income < income-thresh) [
+        calc-pot-profit
+        set-manag
+        update-manag
+      ]
+    ][
+     calc-pot-profit
+        set-manag
+        update-manag
+      ]
+    ]
   calc-yield
   check-agg
   ask turtles [
@@ -110,6 +125,16 @@ to go
   ]
   evaluate
   tick
+end
+
+to set-thresh
+  ;; set income threshold in dependence of average income after first period
+  if bounded = "heterogeneity" [
+    set income-thresh mean [income] of turtles - 5 + random-float 10
+  ]
+  if bounded = "uniform" [
+    set income-thresh mean [income] of turtles + 3
+  ]
 end
 
 to calc-pot-profit
@@ -122,45 +147,60 @@ to calc-pot-profit
 end
 
 to set-manag
-  ;; for up to CHANGE-LIM plots with highest potential profit, set manag based on most profitable option and colour plots accordingly
+  ;; for CHANGE-LIM random or highest-potential-profit plots, set MANAG based on most profitable option and colour plots accordingly
+  if persistence = "random" [
+    ask n-of change-lim my-land [
+      if profit-int < profit-ext [
+        set manag "ext"
+        set pcolor green
+      ]
+      if profit-int > profit-ext [
+        set manag "int"
+        set pcolor yellow
+      ]
+    ]
+  ]
+  ;; highest-potential profit variant
+  if persistence = "profit" [
   ;; check profit potential for each plot from a change in management
-  ask my-land with [manag = "int"][
-    ifelse profit-int < profit-ext [
-      set profit-pot "YES"
-    ][
-    set profit-pot "NO"
-    ]
-  ]
-  ask my-land with [manag = "ext"][
-    ifelse profit-ext < profit-int [
-      set profit-pot "YES"
-    ][
-    set profit-pot "NO"
-    ]
-  ]
-  ;; change management for selected, most profitable plots (CHANGE-LIM or fewer)
-  ifelse count my-land with [profit-pot = "YES"] >= change-lim [
-    ask max-n-of change-lim my-land with [profit-pot = "YES"][
-      abs profit-int - profit-ext
-    ][
-      if profit-int < profit-ext [
-        set manag "ext"
-        set pcolor green
-      ]
-      if profit-int > profit-ext [
-        set manag "int"
-        set pcolor yellow
+    ask my-land with [manag = "int"][
+      ifelse profit-int < profit-ext [
+        set profit-pot "YES"
+      ][
+        set profit-pot "NO"
       ]
     ]
-  ][
-    ask my-land with [profit-pot = "YES"][
-      if profit-int < profit-ext [
-        set manag "ext"
-        set pcolor green
+    ask my-land with [manag = "ext"][
+      ifelse profit-ext < profit-int [
+        set profit-pot "YES"
+      ][
+        set profit-pot "NO"
       ]
-      if profit-int > profit-ext [
-        set manag "int"
-        set pcolor yellow
+    ]
+    ;; change MANAG for selected, most profitable plots (CHANGE-LIM or fewer)
+    ifelse count my-land with [profit-pot = "YES"] >= change-lim [
+      ask max-n-of change-lim my-land with [profit-pot = "YES"][
+        abs profit-int - profit-ext
+      ][
+        if profit-int < profit-ext [
+          set manag "ext"
+          set pcolor green
+        ]
+        if profit-int > profit-ext [
+          set manag "int"
+          set pcolor yellow
+        ]
+      ]
+    ][
+      ask my-land with [profit-pot = "YES"][
+        if profit-int < profit-ext [
+          set manag "ext"
+          set pcolor green
+        ]
+        if profit-int > profit-ext [
+          set manag "int"
+          set pcolor yellow
+        ]
       ]
     ]
   ]
@@ -262,9 +302,9 @@ to R-water
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+470
 10
-668
+928
 469
 -1
 -1
@@ -289,10 +329,10 @@ ticks
 30.0
 
 BUTTON
-21
-42
-84
-75
+14
+10
+77
+43
 setup
 setup
 NIL
@@ -306,10 +346,10 @@ NIL
 1
 
 BUTTON
-99
-42
-162
-75
+112
+10
+175
+43
 NIL
 go\n
 NIL
@@ -323,27 +363,42 @@ NIL
 1
 
 SLIDER
-14
-90
-186
-123
+233
+85
+405
+118
 base-p
 base-p
 0
 0.25
-0.17
+0.14
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-15
-141
-187
-174
+233
+125
+405
+158
 bonus-agg
 bonus-agg
+0
+0.25
+0.15
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+233
+167
+405
+200
+bonus-wat
+bonus-wat
 0
 0.25
 0.13
@@ -352,25 +407,10 @@ bonus-agg
 NIL
 HORIZONTAL
 
-SLIDER
-13
-191
-185
-224
-bonus-wat
-bonus-wat
-0
-0.25
-0.12
-0.01
-1
-NIL
-HORIZONTAL
-
 PLOT
-699
+940
 10
-1014
+1255
 228
 Mean yields
 ticks
@@ -386,9 +426,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [total-yield] of turtles"
 
 PLOT
-1028
+1269
 10
-1361
+1602
 230
 Mean incomes
 ticks
@@ -404,9 +444,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot mean [income] of turtles"
 
 PLOT
-697
+938
 248
-1012
+1253
 450
 Budget
 ticks
@@ -422,9 +462,9 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot budget"
 
 PLOT
-1027
+1268
 248
-1361
+1602
 450
 Extensive land
 ticks
@@ -440,10 +480,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot count patches with [manag = \"ext\"] / count patches with [cover = \"grass\"]"
 
 SLIDER
-13
-231
-185
-264
+233
+207
+405
+240
 dist
 dist
 0
@@ -455,32 +495,78 @@ NIL
 HORIZONTAL
 
 SLIDER
-14
-275
-186
-308
-change-lim
-change-lim
+233
+44
+405
+77
+no-agents
+no-agents
 1
-20
-1.0
+10
+10.0
 1
 1
 NIL
 HORIZONTAL
 
+CHOOSER
+14
+51
+188
+96
+persistence
+persistence
+"random" "profit"
+0
+
+SLIDER
+15
+101
+187
+134
+change-lim
+change-lim
+1
+20
+3.0
+1
+1
+NIL
+HORIZONTAL
+
+SWITCH
+15
+143
+187
+176
+bounded-rationality?
+bounded-rationality?
+0
+1
+-1000
+
+CHOOSER
+15
+185
+186
+230
+bounded
+bounded
+"uniform" "heterogeneity"
+1
+
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
+This is a very simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The 10 farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization up to an income threshold beyond which they seize making changes in management. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
 
 ## HOW IT WORKS
 
 Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly. The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
 
-1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms
+1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms; set income threshold for each farmer
 2. Potential profit calculation: calculate potential profit for each patch (intensive & extensive) given current land allocation and including base payment and boni
-3. Allocation of management: allocate management to patch (extensive vs intensive): for a set of patches (number following CHANGE) where management change most profitable, the farmer may change management
+3. Allocation: allocate management to patch (extensive vs intensive)
 4. Yield calculation: calculate each patch’s yield given allocation
 5. Agglomeration: check how many neighbouring patches are managed extensively
 6. Reception of payments: calculate payments received by each patch
@@ -494,7 +580,6 @@ BASE-P sets the level of the base payment
 BONUS-AGG sets the level of the agglomeration bonus
 BONUS-WAT sets the level of the water quality bonus
 DIST sets the distance from the river of the patches that receive BONUS-WAT
-CHANGE sets the number of patches for which the farmer may change management in each period
 
 MEAN YIELDS plot reports the mean yield of the landscape's patches
 MEAN INCOMES plot reports the mean income derived by each farmer

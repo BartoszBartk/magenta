@@ -121,8 +121,8 @@ to calc-pot-profit
 end
 
 to set-manag
-  ;; for CHANGE random plots, set manag based on most profitable option and colour plots accordingly
-  ask n-of change my-land [
+  ;; for CHANGE-LIM random plots, set manag based on most profitable option and colour plots accordingly
+  ask n-of change-lim my-land [
     if profit-int < profit-ext [
       set manag "ext"
       set pcolor green
@@ -427,11 +427,11 @@ SLIDER
 275
 186
 308
-change
-change
+change-lim
+change-lim
 1
-10
-5.0
+20
+4.0
 1
 1
 NIL
