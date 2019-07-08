@@ -560,8 +560,8 @@ CHOOSER
 185
 186
 230
-bounded
-bounded
+bounded-threshold
+bounded-threshold
 "uniform" "heterogeneity"
 1
 
@@ -619,14 +619,13 @@ Patches have the word "MINE" printed on them in the colour of the farmer they be
 
 ## THINGS TO TRY
 
-Move sliders setting the levels of payments and notice the resulting extent of land-use change and the duration until an equilibrium is reached.
+Move sliders setting the levels of payments and notice the resulting extent of land-use change and the duration until an equilibrium is reached. Compare various variants of the model (persistence of landscape, rationality & heterogeneity of agents).
 
 ## EXTENDING THE MODEL
 
 Possible changes and extensions:
 * interactions among farmers going beyond simple reactions to last period's land allocation (e.g. cheap talk, side payments...)
 * more land-use options (e.g. arable land, agroforestry, forest)
-* behaviourally heterogeneous farmers
 * additional policy instruments (e.g. zoning)
 * more complex evaluation models (e.g. biodiversity also based on margins)
 

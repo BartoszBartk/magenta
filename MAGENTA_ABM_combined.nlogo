@@ -137,10 +137,10 @@ end
 
 to set-thresh
   ;; set income threshold in dependence of average income after first period
-  if bounded = "heterogeneity" [
+  if bounded-threshold = "heterogeneity" [
     set income-thresh mean [income] of turtles - 5 + random-float 10
   ]
-  if bounded = "uniform" [
+  if bounded-threshold = "uniform" [
     set income-thresh mean [income] of turtles + 3
   ]
 end
@@ -560,8 +560,8 @@ CHOOSER
 185
 186
 230
-bounded
-bounded
+bounded-threshold
+bounded-threshold
 "uniform" "heterogeneity"
 1
 
@@ -599,7 +599,7 @@ Agents (FARMERS) compare potential income from each patch they own for intensive
 PERSISTENCE allows for choosing between selection mechanism for "changable" plots (random or income maximizing)
 CHANGE-LIM sets the maximum number of plots that may be changed per farmer and tick
 BOUNDED-RATIONALITY? allows to switch on boundedly rational behaviour (changes until an income threshold is reached)
-BOUNDED allows for choosing between variants of bounded rationality (same threshold for all vs heterogeneity among farmers)
+BOUNDED-THRESHOLD allows for choosing between variants of bounded rationality (same threshold for all vs heterogeneity among farmers)
 WATER-BONUS allows for choosing between variants of the payment function for the water quality bonus (simple one for DIST closest plots and one that follows R model)
 
 NO-AGENTS sets the number of farmers
