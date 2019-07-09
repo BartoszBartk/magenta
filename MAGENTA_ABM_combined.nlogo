@@ -540,7 +540,7 @@ change-lim
 change-lim
 1
 20
-3.0
+1.0
 1
 1
 NIL
