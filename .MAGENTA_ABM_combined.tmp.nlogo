@@ -137,13 +137,12 @@ end
 
 to set-thresh
   ;; set income threshold in dependence of average income after first period
-  ask turtles [
-    if bounded-threshold = "heterogeneity" [
-      set income-thresh mean [income] of turtles - 5 + random-float 10
-    ]
-    if bounded-threshold = "uniform" [
-      set income-thresh mean [income] of turtles + 3
-    ]
+  ask turtle
+  if bounded-threshold = "heterogeneity" [
+    set income-thresh mean [income] of turtles - 5 + random-float 10
+  ]
+  if bounded-threshold = "uniform" [
+    set income-thresh mean [income] of turtles + 3
   ]
 end
 
@@ -540,7 +539,7 @@ change-lim
 change-lim
 1
 20
-3.0
+10.0
 1
 1
 NIL
