@@ -262,7 +262,7 @@ end
 to evaluate
   check-budget
   ;; R models only needed at end of run (here: 50 ticks)
-  if (ticks = 49) [
+  if (ticks = 99) [
     raster
     R-yield
     R-habitat
@@ -396,7 +396,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.15
+0.08
 0.01
 1
 NIL
@@ -411,7 +411,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.13
+0.11
 0.01
 1
 NIL
@@ -513,7 +513,7 @@ no-agents
 no-agents
 1
 10
-1.0
+10.0
 1
 1
 NIL
@@ -527,7 +527,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-1
+0
 
 SLIDER
 15
@@ -538,7 +538,7 @@ change-lim
 change-lim
 1
 20
-20.0
+10.0
 1
 1
 NIL
@@ -551,7 +551,7 @@ SWITCH
 176
 bounded-rationality?
 bounded-rationality?
-1
+0
 1
 -1000
 
@@ -573,7 +573,7 @@ CHOOSER
 water-bonus
 water-bonus
 "simple" "as ES model"
-1
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -967,6 +967,59 @@ NetLogo 6.0.4
       <value value="0"/>
       <value value="1"/>
       <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="MAGENTA_experiment_v2" repetitions="1" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>r:stop</final>
+    <timeLimit steps="100"/>
+    <metric>budget</metric>
+    <metric>r:get "ay.sum"</metric>
+    <metric>r:get "hi"</metric>
+    <metric>r:get "wq"</metric>
+    <enumeratedValueSet variable="bounded-rationality?">
+      <value value="false"/>
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bonus-agg">
+      <value value="0"/>
+      <value value="0.1"/>
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bounded-threshold">
+      <value value="&quot;heterogeneity&quot;"/>
+      <value value="&quot;uniform&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="base-p">
+      <value value="0"/>
+      <value value="0.1"/>
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="persistence">
+      <value value="&quot;profit&quot;"/>
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bonus-wat">
+      <value value="0"/>
+      <value value="0.1"/>
+      <value value="0.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="water-bonus">
+      <value value="&quot;simple&quot;"/>
+      <value value="&quot;as ES model&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dist">
+      <value value="1"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="change-lim">
+      <value value="1"/>
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="no-agents">
+      <value value="1"/>
+      <value value="10"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
