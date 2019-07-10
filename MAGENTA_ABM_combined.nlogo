@@ -971,7 +971,7 @@ NetLogo 6.0.4
       <value value="2"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="MAGENTA_experiment_v2" repetitions="1" runMetricsEveryStep="false">
+  <experiment name="MAGENTA_experiment_v2" repetitions="5" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <final>r:stop</final>
