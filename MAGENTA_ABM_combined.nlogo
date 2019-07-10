@@ -383,7 +383,7 @@ base-p
 base-p
 0
 0.25
-0.14
+0.2
 0.01
 1
 NIL
@@ -398,7 +398,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.08
+0.2
 0.01
 1
 NIL
@@ -413,7 +413,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.11
+0.2
 0.01
 1
 NIL
@@ -540,7 +540,7 @@ change-lim
 change-lim
 1
 20
-1.0
+10.0
 1
 1
 NIL
@@ -565,7 +565,7 @@ CHOOSER
 bounded-threshold
 bounded-threshold
 "uniform" "heterogeneity"
-1
+0
 
 CHOOSER
 14
@@ -575,7 +575,7 @@ CHOOSER
 water-bonus
 water-bonus
 "simple" "as ES model"
-0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -971,7 +971,7 @@ NetLogo 6.0.4
       <value value="2"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="MAGENTA_experiment_v2" repetitions="1" runMetricsEveryStep="true">
+  <experiment name="MAGENTA_experiment_v2" repetitions="1" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <final>r:stop</final>
@@ -984,43 +984,28 @@ NetLogo 6.0.4
       <value value="false"/>
       <value value="true"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="bonus-agg">
-      <value value="0"/>
-      <value value="0.1"/>
-      <value value="0.2"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
     <enumeratedValueSet variable="bounded-threshold">
       <value value="&quot;heterogeneity&quot;"/>
       <value value="&quot;uniform&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="base-p">
-      <value value="0"/>
-      <value value="0.1"/>
-      <value value="0.2"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
     <enumeratedValueSet variable="persistence">
       <value value="&quot;profit&quot;"/>
       <value value="&quot;random&quot;"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="bonus-wat">
-      <value value="0"/>
-      <value value="0.1"/>
-      <value value="0.2"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
     <enumeratedValueSet variable="water-bonus">
       <value value="&quot;simple&quot;"/>
       <value value="&quot;as ES model&quot;"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="dist">
+      <value value="0"/>
       <value value="1"/>
+      <value value="2"/>
     </enumeratedValueSet>
-    <enumeratedValueSet variable="change-lim">
-      <value value="1"/>
-      <value value="5"/>
-      <value value="10"/>
-    </enumeratedValueSet>
+    <steppedValueSet variable="change-lim" first="1" step="1" last="10"/>
     <enumeratedValueSet variable="no-agents">
-      <value value="1"/>
       <value value="10"/>
     </enumeratedValueSet>
   </experiment>
