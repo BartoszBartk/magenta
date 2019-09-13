@@ -23,7 +23,7 @@ library(raster)
 library(igraph)
 
 # read in ascii files
-lu.map <- read.asciigrid("map.asc", as.image = FALSE, plot.image = FALSE, colname = "lu",
+lu.map <- read.asciigrid("landuse_final.asc", as.image = FALSE, plot.image = FALSE, colname = "lu",
                          proj4string = CRS(as.character(NA)))
 
 # for the patch number calculation, convert all grid cells except extensive grassland to NA
@@ -49,3 +49,4 @@ if(sum(lu.map$lu, na.rm=T) > 0){
 }
 
 # write model output...
+

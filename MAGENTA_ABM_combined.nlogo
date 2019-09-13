@@ -364,7 +364,7 @@ BUTTON
 43
 NIL
 go\n
-NIL
+T
 1
 T
 OBSERVER
@@ -383,7 +383,7 @@ base-p
 base-p
 0
 0.25
-0.15
+0.0
 0.01
 1
 NIL
@@ -413,7 +413,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.15
+0.1
 0.01
 1
 NIL
@@ -500,7 +500,7 @@ dist
 dist
 0
 2
-2.0
+0.0
 1
 1
 NIL
