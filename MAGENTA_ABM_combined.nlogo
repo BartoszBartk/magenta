@@ -100,14 +100,14 @@ to assign-plots
   ]
   ;; set MY-NEIGHBORS
   ask patches [
-    set my-neighbors neighbors with [owned-by = [owned-by] of myself]
+    set my-neighbors neighbors4 with [owned-by = [owned-by] of myself]
   ]
 end
 
 to check-agg
   ;; different levels of agg-payment dependent on different shares of neighbours with extensive management
   ask patches [
-    set agg count neighbors with [manag = "ext"] / 8
+    set agg count neighbors4 with [manag = "ext"] / 4
   ]
 end
 
@@ -221,7 +221,7 @@ to update-manag
   if (persistence = "profit" AND (count my-land with [profit-pot = "YES"] <= change-lim)) OR change-lim = count patches / count turtles [
     ask my-land with [manag = "int"] [
       ask my-neighbors with [manag = "int"] [
-        if 0.25 * bonus-agg > (([profit-int] of self - [profit-ext] of self) + ([profit-int] of myself - [profit-ext] of myself)) [
+        if 0.5 * bonus-agg > (([profit-int] of self - [profit-ext] of self) + ([profit-int] of myself - [profit-ext] of myself)) [
           set manag "ext"
           set pcolor green
           ask myself [
@@ -383,7 +383,7 @@ base-p
 base-p
 0
 0.25
-0.25
+0.15
 0.01
 1
 NIL
@@ -398,7 +398,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.25
+0.0
 0.01
 1
 NIL
@@ -413,7 +413,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.25
+0.15
 0.01
 1
 NIL
@@ -500,7 +500,7 @@ dist
 dist
 0
 2
-1.0
+2.0
 1
 1
 NIL
@@ -529,7 +529,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-0
+1
 
 SLIDER
 15
@@ -540,7 +540,7 @@ change-lim
 change-lim
 1
 20
-10.0
+1.0
 1
 1
 NIL
@@ -575,7 +575,7 @@ CHOOSER
 water-bonus
 water-bonus
 "simple" "as ES model"
-1
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1077,6 +1077,38 @@ NetLogo 6.0.4
     <steppedValueSet variable="change-lim" first="1" step="1" last="10"/>
     <enumeratedValueSet variable="no-agents">
       <value value="1"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="MAGENTA_experiment_v3_rational" repetitions="5" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>r:stop</final>
+    <timeLimit steps="100"/>
+    <metric>budget</metric>
+    <metric>r:get "ay.sum"</metric>
+    <metric>r:get "hi"</metric>
+    <metric>r:get "wq"</metric>
+    <enumeratedValueSet variable="no-agents">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bounded-rationality?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="persistence">
+      <value value="&quot;profit&quot;"/>
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="change-lim" first="1" step="1" last="10"/>
+    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="water-bonus">
+      <value value="&quot;simple&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dist">
+      <value value="0"/>
+      <value value="1"/>
+      <value value="2"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>

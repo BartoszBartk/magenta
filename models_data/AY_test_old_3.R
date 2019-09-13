@@ -48,6 +48,6 @@ ay <- sqrt(lu.map[grassland.idx] * (1 + fert.map[grassland.idx]))
 ay[is.na(ay)] <- 0
 
 # summarize over whole area and normalize ay to a range from 0 to 100 
-ay.sum <- round((sum(ay) - 296.8974) / (342.8276 - 296.8974),2) * 100 
+ay.sum <- (round(sum(ay),2) - 296.8974) / (342.8276 - 296.8974) * 100 
 
 # write model output...
