@@ -383,7 +383,7 @@ base-p
 base-p
 0
 0.25
-0.0
+0.25
 0.01
 1
 NIL
@@ -398,7 +398,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.0
+0.25
 0.01
 1
 NIL
@@ -413,7 +413,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.1
+0.25
 0.01
 1
 NIL
@@ -500,7 +500,7 @@ dist
 dist
 0
 2
-0.0
+2.0
 1
 1
 NIL
@@ -529,7 +529,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-1
+0
 
 SLIDER
 15
@@ -540,7 +540,7 @@ change-lim
 change-lim
 1
 20
-1.0
+10.0
 1
 1
 NIL
@@ -953,24 +953,6 @@ NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="MAGENTA_experiment_v1" repetitions="5" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <final>r:stop</final>
-    <timeLimit steps="50"/>
-    <metric>budget</metric>
-    <metric>r:get "ay.sum"</metric>
-    <metric>r:get "hi"</metric>
-    <metric>r:get "wq"</metric>
-    <steppedValueSet variable="bonus-agg" first="0" step="0.01" last="0.25"/>
-    <steppedValueSet variable="base-p" first="0" step="0.01" last="0.25"/>
-    <steppedValueSet variable="bonus-wat" first="0" step="0.01" last="0.25"/>
-    <enumeratedValueSet variable="dist">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-    </enumeratedValueSet>
-  </experiment>
   <experiment name="MAGENTA_experiment_v2" repetitions="5" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
@@ -985,43 +967,6 @@ NetLogo 6.0.4
       <value value="true"/>
     </enumeratedValueSet>
     <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
-    <enumeratedValueSet variable="bounded-threshold">
-      <value value="&quot;heterogeneity&quot;"/>
-      <value value="&quot;uniform&quot;"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
-    <enumeratedValueSet variable="persistence">
-      <value value="&quot;profit&quot;"/>
-      <value value="&quot;random&quot;"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
-    <enumeratedValueSet variable="water-bonus">
-      <value value="&quot;simple&quot;"/>
-      <value value="&quot;as ES model&quot;"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="dist">
-      <value value="0"/>
-      <value value="1"/>
-      <value value="2"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="change-lim" first="1" step="1" last="10"/>
-    <enumeratedValueSet variable="no-agents">
-      <value value="10"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="MAGENTA_experiment_v2_rest" repetitions="5" runMetricsEveryStep="false">
-    <setup>setup</setup>
-    <go>go</go>
-    <final>r:stop</final>
-    <timeLimit steps="100"/>
-    <metric>budget</metric>
-    <metric>r:get "ay.sum"</metric>
-    <metric>r:get "hi"</metric>
-    <metric>r:get "wq"</metric>
-    <enumeratedValueSet variable="bounded-rationality?">
-      <value value="true"/>
-    </enumeratedValueSet>
-    <steppedValueSet variable="bonus-agg" first="0.2" step="0.05" last="0.25"/>
     <enumeratedValueSet variable="bounded-threshold">
       <value value="&quot;heterogeneity&quot;"/>
       <value value="&quot;uniform&quot;"/>
@@ -1109,6 +1054,41 @@ NetLogo 6.0.4
       <value value="0"/>
       <value value="1"/>
       <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="MAGENTA_experiment_v3_bounded" repetitions="5" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>r:stop</final>
+    <timeLimit steps="100"/>
+    <metric>budget</metric>
+    <metric>r:get "ay.sum"</metric>
+    <metric>r:get "hi"</metric>
+    <metric>r:get "wq"</metric>
+    <enumeratedValueSet variable="bounded-rationality?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="bounded-threshold">
+      <value value="&quot;heterogeneity&quot;"/>
+      <value value="&quot;uniform&quot;"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="persistence">
+      <value value="&quot;profit&quot;"/>
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="water-bonus">
+      <value value="&quot;simple&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dist">
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="change-lim" first="1" step="1" last="10"/>
+    <enumeratedValueSet variable="no-agents">
+      <value value="10"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
