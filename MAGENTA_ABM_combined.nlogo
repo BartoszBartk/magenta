@@ -553,7 +553,7 @@ SWITCH
 176
 bounded-rationality?
 bounded-rationality?
-1
+0
 1
 -1000
 
@@ -1056,7 +1056,7 @@ NetLogo 6.0.4
       <value value="2"/>
     </enumeratedValueSet>
   </experiment>
-  <experiment name="MAGENTA_experiment_v3_bounded" repetitions="5" runMetricsEveryStep="false">
+  <experiment name="MAGENTA_experiment_v3_bounded_add" repetitions="5" runMetricsEveryStep="false">
     <setup>setup</setup>
     <go>go</go>
     <final>r:stop</final>
@@ -1068,7 +1068,9 @@ NetLogo 6.0.4
     <enumeratedValueSet variable="bounded-rationality?">
       <value value="true"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="bonus-agg">
+      <value value="0.25"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="bounded-threshold">
       <value value="&quot;heterogeneity&quot;"/>
       <value value="&quot;uniform&quot;"/>
