@@ -116,11 +116,11 @@ to set-thresh
   ;; set income threshold in dependence of average income after first period
   if bounded-threshold = "heterogeneity" [
     ask turtles [
-      set income-thresh mean [income] of turtles - standard-deviation [income] of turtles + random-float (4 * standard-deviation [income] of turtles)
+      set income-thresh mean [income] of turtles - standard-deviation [income] of turtles + random-float (8 * standard-deviation [income] of turtles)
     ]
   ]
   if bounded-threshold = "uniform" [
-    set global-income-thresh mean [income] of turtles - standard-deviation [income] of turtles + random-float (4 * standard-deviation [income] of turtles)
+    set global-income-thresh mean [income] of turtles - 4 * standard-deviation [income] of turtles + random-float (8 * standard-deviation [income] of turtles)
     ask turtles [
       set income-thresh global-income-thresh
     ]
@@ -569,7 +569,7 @@ CHOOSER
 bounded-threshold
 bounded-threshold
 "uniform" "heterogeneity"
-1
+0
 
 CHOOSER
 14
