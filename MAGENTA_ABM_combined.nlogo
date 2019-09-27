@@ -1097,6 +1097,85 @@ NetLogo 6.0.4
       <value value="10"/>
     </enumeratedValueSet>
   </experiment>
+  <experiment name="MAGENTA_v4_rational" repetitions="5" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>r:stop</final>
+    <timeLimit steps="100"/>
+    <metric>budget</metric>
+    <metric>r:get "ay.sum"</metric>
+    <metric>r:get "hi"</metric>
+    <metric>r:get "wq"</metric>
+    <enumeratedValueSet variable="no-agents">
+      <value value="1"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bounded-rationality?">
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="persistence">
+      <value value="&quot;profit&quot;"/>
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="change-lim">
+      <value value="1"/>
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="water-bonus">
+      <value value="&quot;simple&quot;"/>
+      <value value="&quot;as ES model&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dist">
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="MAGENTA_v4_bounded" repetitions="10" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <final>r:stop</final>
+    <timeLimit steps="100"/>
+    <metric>budget</metric>
+    <metric>mean [income-thresh] of turtles</metric>
+    <metric>r:get "ay.sum"</metric>
+    <metric>r:get "hi"</metric>
+    <metric>r:get "wq"</metric>
+    <enumeratedValueSet variable="no-agents">
+      <value value="1"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bounded-rationality?">
+      <value value="true"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="bounded-threshold">
+      <value value="&quot;uniform&quot;"/>
+      <value value="&quot;heterogeneity&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="persistence">
+      <value value="&quot;profit&quot;"/>
+      <value value="&quot;random&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="change-lim">
+      <value value="1"/>
+      <value value="5"/>
+      <value value="10"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="bonus-agg" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="base-p" first="0" step="0.05" last="0.25"/>
+    <steppedValueSet variable="bonus-wat" first="0" step="0.05" last="0.25"/>
+    <enumeratedValueSet variable="water-bonus">
+      <value value="&quot;simple&quot;"/>
+      <value value="&quot;as ES model&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="dist">
+      <value value="1"/>
+      <value value="2"/>
+    </enumeratedValueSet>
+  </experiment>
 </experiments>
 @#$#@#$#@
 @#$#@#$#@
