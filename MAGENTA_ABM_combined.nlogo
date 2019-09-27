@@ -584,13 +584,13 @@ water-bonus
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The farmers, who own randomly distributed grassland patches, make decisions on the basis of simple income maximization (optionally: up to an income threshold beyond which they seize making changes in management). The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
+A simple model that aims to demonstrate the influence of agri-environmental payments on land-use patterns in a virtual landscape. The landscape consists of grassland (which can be managed extensively or intensively) and a river. Agri-environmental payments (BASE-P) are provided for extensive management of grassland. Additionally, there are boni for (a) extensive grassland in proximity of the river (BONUS-WAT); and (b) clusters ("agglomerations") of extensive grassland (BONUS-AGG). The farmers, who own randomly distributed grassland patches, make decisions either on the basis of simple income maximization or they maximize only up to an income threshold beyond which they seize making changes in management. The resulting landscape pattern is evaluated by means of three simple models for (a) agricultural yield (R-YIELD), (b) habitat/biodiversity (R-HABITAT) and (c) water quality (R-WATER). The latter two correspond to the two boni.
 
 ## HOW IT WORKS
 
-Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly (unless they have reached an income threshold beyond which they don't make any further changes) to a limited number of patches (randomly chosen or with highest income gain). The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
+Agents (FARMERS) compare potential income from each patch they own for intensive vs. extensive management (given agri-environmental payments and last period's land-use pattern). They choose the management that maximizes income and apply it accordingly (unless they have reached an income threshold beyond which they don't make any further changes) to a limited number of patches (randomly chosen or with highest potential income gain, to be determined by means of the PERSISTENCE chooser). The assumed price of a unit of grass (product of grasslands) is 1, so that YIELD equals income (PROFIT) per patch in the absence of agri-environmental payments.
 
-1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms; set income threshold for each farmer
+1. Initialization: import raster files and translate them into patch attributes; allocate patches to farms; (optionally) set income threshold for each farmer
 2. Potential profit calculation: calculate potential profit for each patch (intensive & extensive) given current land allocation and including base payment and boni
 3. Allocation: allocate management to a limited number of patches (extensive vs intensive)
 4. Yield calculation: calculate each patch’s yield given allocation
@@ -604,7 +604,7 @@ Agents (FARMERS) compare potential income from each patch they own for intensive
 
 PERSISTENCE allows for choosing between selection mechanism for "changable" plots (random or income maximizing)
 CHANGE-LIM sets the maximum number of plots that may be changed per farmer and tick
-BOUNDED-RATIONALITY? allows to switch on boundedly rational behaviour (changes until an income threshold is reached)
+BOUNDED-RATIONALITY? allows to switch on boundedly rational behaviour (management changes only until an income threshold is reached)
 BOUNDED-THRESHOLD allows for choosing between variants of bounded rationality (same threshold for all vs heterogeneity among farmers)
 WATER-BONUS allows for choosing between variants of the payment function for the water quality bonus (simple one for DIST closest plots and one that follows R model)
 
@@ -633,7 +633,7 @@ Possible changes and extensions:
 * interactions among farmers going beyond simple reactions to last period's land allocation (e.g. cheap talk, side payments...)
 * more land-use options (e.g. arable land, agroforestry, forest)
 * additional policy instruments (e.g. zoning)
-* more complex evaluation models (e.g. biodiversity also based on margins)
+* more complex evaluation models (e.g. biodiversity also based on margins and linear elements)
 
 ## NETLOGO FEATURES
 
@@ -645,7 +645,7 @@ NA
 
 ## CREDITS AND REFERENCES
 
-NA (to be updated)
+Model developed by Bartosz Bartkowski (bartosz.bartkowski@ufz.de).
 @#$#@#$#@
 default
 true
