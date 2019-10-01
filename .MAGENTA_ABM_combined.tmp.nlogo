@@ -44,6 +44,7 @@ to setup
     calc-profit
     yield-income
   ]
+
   set-thresh
   reset-ticks
 end
@@ -402,7 +403,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.11
+0.16
 0.01
 1
 NIL
@@ -417,7 +418,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.12
+0.05
 0.01
 1
 NIL
@@ -504,7 +505,7 @@ dist
 dist
 0
 2
-2.0
+1.0
 1
 1
 NIL
@@ -519,7 +520,7 @@ no-agents
 no-agents
 1
 10
-10.0
+1.0
 1
 1
 NIL
@@ -533,7 +534,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-0
+1
 
 SLIDER
 15
@@ -544,7 +545,7 @@ change-lim
 change-lim
 1
 20
-10.0
+1.0
 1
 1
 NIL
@@ -557,7 +558,7 @@ SWITCH
 176
 bounded-rationality?
 bounded-rationality?
-0
+1
 1
 -1000
 
@@ -579,7 +580,7 @@ CHOOSER
 water-bonus
 water-bonus
 "simple" "as ES model"
-0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
