@@ -389,7 +389,7 @@ base-p
 base-p
 0
 0.25
-0.13
+0.25
 0.01
 1
 NIL
@@ -404,7 +404,7 @@ bonus-agg
 bonus-agg
 0
 0.25
-0.16
+0.25
 0.01
 1
 NIL
@@ -419,7 +419,7 @@ bonus-wat
 bonus-wat
 0
 0.25
-0.05
+0.25
 0.01
 1
 NIL
@@ -506,7 +506,7 @@ dist
 dist
 0
 2
-1.0
+2.0
 1
 1
 NIL
@@ -521,7 +521,7 @@ no-agents
 no-agents
 1
 10
-1.0
+10.0
 1
 1
 NIL
@@ -535,7 +535,7 @@ CHOOSER
 persistence
 persistence
 "random" "profit"
-1
+0
 
 SLIDER
 15
@@ -546,7 +546,7 @@ change-lim
 change-lim
 1
 20
-13.0
+10.0
 1
 1
 NIL
@@ -559,7 +559,7 @@ SWITCH
 176
 bounded-rationality?
 bounded-rationality?
-1
+0
 1
 -1000
 
@@ -581,7 +581,7 @@ CHOOSER
 water-bonus
 water-bonus
 "simple" "as ES model"
-1
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
