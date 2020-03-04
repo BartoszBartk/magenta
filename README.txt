@@ -1,1 +1,1 @@
-This is the agent-based modelling part of a project (Multi-objective AGENT-based land-use Allocation, MAGENTA) to combine multi-objective landscape optimization modelling with agent-based modelling.
+This is the agent-based modelling part of a project (Aligning Agent-Based Modelling with Multi-Objective Land-Use Allocation, ALABAMA) to combine multi-objective landscape optimization modelling with agent-based modelling.
